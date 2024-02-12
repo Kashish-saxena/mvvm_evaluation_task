@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_evaluation_task/core/constants/color_constants.dart';
 
 class BackButtonWidget extends StatelessWidget {
   const BackButtonWidget({super.key, required this.onTap});
@@ -11,7 +12,7 @@ class BackButtonWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: const Icon(
           Icons.arrow_back,
-          color: Colors.black,
+          color: ColorConstants.black,
           size: 30,
           weight: 50,
         ),

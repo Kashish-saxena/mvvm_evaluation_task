@@ -6,4 +6,5 @@ class ColorConstants {
   static const Color blue = Color(0xff432C81);
   static const Color background = Color(0xffe1cada);
   static const Color amber = Colors.amber;
+  static const Color grey = Colors.grey;
 }

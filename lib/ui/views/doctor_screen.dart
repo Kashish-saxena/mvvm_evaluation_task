@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mvvm_evaluation_task/core/constants/color_constants.dart';
 import 'package:mvvm_evaluation_task/core/constants/image_constants.dart';
@@ -5,20 +7,32 @@ import 'package:mvvm_evaluation_task/core/constants/string_constants.dart';
 import 'package:mvvm_evaluation_task/core/constants/text_styles.dart';
 import 'package:mvvm_evaluation_task/core/models/availabilty_model.dart';
 import 'package:mvvm_evaluation_task/core/models/users_reponse_model.dart';
+import 'package:mvvm_evaluation_task/core/view_model/doctor_view_model.dart';
+import 'package:mvvm_evaluation_task/ui/views/base_view.dart';
 import 'package:mvvm_evaluation_task/ui/widgets/navigation_button.dart';
 import 'package:mvvm_evaluation_task/ui/widgets/common_button.dart';
 
+// ignore: must_be_immutable
 class DoctorScreen extends StatelessWidget {
-  const DoctorScreen({super.key, required this.arguments});
-  final ResponseModel arguments;
+  DoctorScreen({super.key, required this.responseArguments});
+  final ResponseModel responseArguments;
+  DoctorViewModel? model;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: buildBody(context),
+    return BaseView<DoctorViewModel>(
+      onModelReady: (model) {
+        this.model = model;
+      },
+      builder: (context, model, child) {
+        return Scaffold(
+          body: buildBody(context, model),
+        );
+      },
     );
   }
 
-  Widget buildBody(context) {
+  Widget buildBody(context, model) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -53,7 +67,7 @@ class DoctorScreen extends StatelessWidget {
                       ),
                       child: const Icon(
                         Icons.person_2_outlined,
-                        color: Colors.yellow,
+                        color: ColorConstants.amber,
                         size: 40,
                       ),
                     ),
@@ -67,7 +81,7 @@ class DoctorScreen extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 1, color: Colors.grey)),
+                border: Border.all(width: 1, color: ColorConstants.grey)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -77,9 +91,9 @@ class DoctorScreen extends StatelessWidget {
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   height: 190,
                   width: 180,
-                  child: arguments.avatar != null
+                  child: responseArguments.avatar != null
                       ? Image.network(
-                          "${arguments.avatar}",
+                          "${responseArguments.avatar}",
                           fit: BoxFit.fill,
                         )
                       : Image.asset(ImageConstants.profile),
@@ -94,7 +108,7 @@ class DoctorScreen extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      arguments.firstName ?? "",
+                      responseArguments.firstName ?? "",
                       style: const TextStyle(fontSize: 18),
                     ),
                     const Text(StringConstants.dentist),
@@ -120,7 +134,7 @@ class DoctorScreen extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
+            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             height: 70,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -129,7 +143,7 @@ class DoctorScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Availability available = availability[index];
                   return buildAppointment(
-                      index, available.day, available.availability);
+                      index, available.day, available.availability, model);
                 }),
           ),
           const ButtonWidget(
@@ -148,33 +162,49 @@ class DoctorScreen extends StatelessWidget {
     );
   }
 
-  Widget buildAppointment(int index, String day, String available) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(width: 1),
-        color: index == index / 2 ? ColorConstants.blue : ColorConstants.white,
-      ),
-      child: Column(
-        children: [
-          Text(
-            day,
-            style: TextStyle(
-                color: index == index / 2
-                    ? ColorConstants.white
-                    : ColorConstants.black,
-                fontSize: 18),
-          ),
-          Text(
-            available,
-            style: TextStyle(
-                color: index == index / 2
-                    ? ColorConstants.white
-                    : ColorConstants.black),
-          ),
-        ],
+  Widget buildAppointment(
+      int index, String day, String available, DoctorViewModel model) {
+    return InkWell(
+      onTap: () {
+        selectedIndex = index;
+        model.changeColor();
+        log("${model.isSelected}");
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 1),
+          color: index == selectedIndex
+              ? model.isSelected
+                  ? ColorConstants.blue
+                  : ColorConstants.white
+              : ColorConstants.white,
+        ),
+        child: Column(
+          children: [
+            Text(
+              day,
+              style: TextStyle(
+                  color: index == selectedIndex
+                      ? model.isSelected
+                          ? ColorConstants.white
+                          : ColorConstants.black
+                      : ColorConstants.black,
+                  fontSize: 18),
+            ),
+            Text(
+              available,
+              style: TextStyle(
+                  color: index == selectedIndex
+                      ? model.isSelected
+                          ? ColorConstants.white
+                          : ColorConstants.black
+                      : ColorConstants.black),
+            ),
+          ],
+        ),
       ),
     );
   }

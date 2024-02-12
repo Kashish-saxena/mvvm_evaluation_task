@@ -5,6 +5,8 @@ class Availability {
 }
 
 List availability = [
-  Availability("Today", "NotAvailable"),
+  Availability("Today", "Not Available"),
   Availability("Tomorrow", "Available"),
+  Availability("Monday", "Available"),
+  Availability("Tuesday", "Not Available"),
 ];

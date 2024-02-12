@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 StringConstants.seeMore,
                 style: TextStyles.textStyleFont20Weight400
-                    .copyWith(fontSize: 14, color: Colors.grey),
+                    .copyWith(fontSize: 14, color: ColorConstants.grey),
               ),
             ),
           ),
@@ -163,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: isLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : const Center(child: Text("No More Data to Load")));
+                    : const Center(child: Text(StringConstants.noData)));
           }
         });
   }
@@ -229,7 +229,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: const Icon(
                   Icons.person_2_outlined,
-                  color: Colors.yellow,
+                  color: ColorConstants.amber,
                   size: 40,
                 ),
               ),
@@ -240,12 +240,12 @@ class HomeScreen extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: const [
                 BoxShadow(
-                  color: Colors.grey,
+                  color: ColorConstants.grey,
                   offset: Offset(0, 4),
                   blurRadius: 5,
                 ),
               ],
-              color: Colors.white,
+              color: ColorConstants.white,
               borderRadius: BorderRadius.circular(10),
             ),
             child: ListTile(

@@ -14,5 +14,6 @@ class StringConstants {
   static const String or = "Or";
   static const String contact = "Contact the doctor";
   static const String dentist = "Dentist";
-   static const String rating = "3.7";
+  static const String rating = "3.7";
+  static const String noData = "No More Data to Load";
 }
